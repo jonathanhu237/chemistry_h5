@@ -187,11 +187,18 @@ const flowSteps = [
   ["课前测试", "10 题"],
   ["结果分析", "薄弱点"],
   ["元素区", "p 区 · 卤素"],
-  ["卤素学习", "KC 路径"],
+  ["卤素学习", "知识点路径"],
   ["性质预习", "通性 / 特殊性"],
   ["实验学习", "反应视频"],
+  ["完成确认", "学习检查"],
   ["课后测试", "10 题"],
   ["数据总结", "成绩 / 路径"],
+];
+
+const completionChecks = [
+  ["推荐路径", "p 区 · 卤素"],
+  ["学习内容", "13.1 卤族元素通性"],
+  ["实验记录", "卤素的氧化性"],
 ];
 
 const demoNavGroups = [
@@ -255,20 +262,89 @@ const zoneCards = [
   ["ds", "ds 区元素", "铜、锌等相关性质", "暂不学习"],
 ];
 
-const commonProperties = [
-  "结构：VIIA 族，ns²np⁵，多以双原子分子 X₂ 存在",
-  "氧化性：F₂ ＞ Cl₂ ＞ Br₂ ＞ I₂",
-  "还原性：I⁻ ＞ Br⁻ ＞ Cl⁻ ＞ F⁻",
-  "可与金属或非金属反应生成卤化物",
-  "与 H₂ 化合生成 HX；与碱发生歧化反应",
-  "物理性质：颜色加深、熔沸点升高，多有毒且有刺激性",
-];
-
-const specialProperties = [
-  ["F", "无正价，电负性最大；与水剧烈反应，只能电解制备"],
-  ["Cl", "氯水具有漂白性；冷碱、热碱中歧化产物不同"],
-  ["Br", "常温唯一液态非金属，易挥发，可由海水提溴"],
-  ["I", "易升华，遇淀粉变蓝，I₂ + KI 可形成 I₃⁻"],
+const halogenKnowledgeCards = [
+  {
+    code: "13.1",
+    title: "卤族元素通性",
+    tag: "基础性质",
+    summary: "卤素位于 p 区第 17 族，最重要的是把结构特点和氧化性递变联系起来。",
+    points: [
+      "最外层电子构型为 ns²np⁵，通常形成双原子分子 X₂。",
+      "单质氧化性：F₂ > Cl₂ > Br₂ > I₂。",
+      "卤离子还原性：I⁻ > Br⁻ > Cl⁻ > F⁻。",
+    ],
+    prompt: "看到置换反应时，先判断是哪一种卤素单质在氧化卤离子。",
+    experiment: {
+      label: "进入氧化性实验",
+      copy: "观察 Cl₂ 置换 I⁻ 的颜色变化",
+      target: "experiment",
+    },
+  },
+  {
+    code: "13.2",
+    title: "卤素单质",
+    tag: "单质性质",
+    summary: "卤素单质的颜色、状态和反应活性随原子序数增加呈规律变化。",
+    points: [
+      "F₂、Cl₂ 为气体，Br₂ 为液体，I₂ 为固体。",
+      "颜色逐渐加深，熔沸点整体升高。",
+      "卤素单质可与金属或非金属反应生成卤化物。",
+    ],
+    prompt: "比较单质性质时，把颜色、状态、氧化性三个维度分开看。",
+    experiment: {
+      label: "进入氧化性实验",
+      copy: "用置换反应比较单质氧化性",
+      target: "experiment",
+    },
+  },
+  {
+    code: "13.3",
+    title: "卤化氢",
+    tag: "氢化物",
+    summary: "卤化氢的酸性、稳定性和还原性变化方向不同，容易混淆。",
+    points: [
+      "热稳定性：HF > HCl > HBr > HI。",
+      "水溶液酸性：HF 弱，HCl、HBr、HI 为强酸。",
+      "还原性：HI > HBr > HCl > HF。",
+    ],
+    prompt: "HF 的特殊性来自强氢键和 H-F 键强度，不能只按周期趋势机械判断。",
+  },
+  {
+    code: "13.4",
+    title: "卤化物、互化物和多卤化物",
+    tag: "化合物",
+    summary: "这一组内容重点看卤离子的检验、沉淀颜色和复杂离子形成。",
+    points: [
+      "AgCl、AgBr、AgI 可用于卤离子检验。",
+      "卤素互化物由不同卤素组成，中心原子常呈正氧化态。",
+      "I₂ 与 I⁻ 可形成 I₃⁻，解释碘在碘化钾溶液中的溶解。",
+    ],
+    prompt: "做鉴别题时，先看沉淀颜色，再看是否溶于氨水或形成配合物。",
+  },
+  {
+    code: "13.5",
+    title: "卤素氧化物、含氧酸及其盐",
+    tag: "含氧化合物",
+    summary: "含氧酸及其盐常考氧化性变化，需要结合氧化态和溶液条件判断。",
+    points: [
+      "同一卤素中，含氧酸氧化态越高，氧化性判断越依赖条件。",
+      "次氯酸及其盐常表现漂白和氧化能力。",
+      "氯酸盐、高氯酸盐等在酸性或加热条件下反应性明显增强。",
+    ],
+    prompt: "遇到含氧酸盐题目，不要只背强弱，要同时看酸碱性和反应条件。",
+  },
+  {
+    code: "13.6",
+    title: "拟卤素",
+    tag: "类比迁移",
+    summary: "拟卤素的学习重点是用卤素规律进行类比，但不要把所有性质完全等同。",
+    points: [
+      "常见拟卤素包括氰、硫氰等相关体系。",
+      "部分反应形式与卤素相似，例如形成类似卤化物的化合物。",
+      "类比时要回到电子结构和具体反应条件。",
+    ],
+    prompt: "拟卤素题目通常考迁移能力，先找相似点，再找限制条件。",
+  },
 ];
 
 const miniElements = [
@@ -764,16 +840,17 @@ function AnalysisScreen({ go }) {
         right={<IconButton label="继续" onClick={() => go("periodic")}>›</IconButton>}
       />
 
-      <section className="analysis-hero">
-        <span>当前薄弱路径</span>
-        <h3>p 区 · 卤素</h3>
-        <p>课前摸底显示卤素掌握度 42%，建议优先学习。</p>
+      <section className="analysis-summary-card">
+        <div>
+          <span>薄弱</span>
+          <strong>p 区 · 卤素</strong>
+        </div>
+        <p>建议先学习卤素知识点，并完成氧化性实验。</p>
       </section>
 
       <section className="analysis-section">
         <div className="section-title">
-          <h3>一级目录掌握</h3>
-          <span>4 区</span>
+          <h3>元素区掌握</h3>
         </div>
         <div className="zone-result-grid">
           {zoneResults.map((zone) => (
@@ -795,8 +872,7 @@ function AnalysisScreen({ go }) {
 
       <section className="analysis-section">
         <div className="section-title">
-          <h3>章节掌握</h3>
-          <span>按区展开</span>
+          <h3>学习模块掌握</h3>
         </div>
         <div className="analysis-zone-stack">
           {elementZones.map((zone) => {
@@ -860,13 +936,6 @@ function PeriodicScreen({ go }) {
         left={<IconButton label="返回" onClick={() => go("analysis")}>‹</IconButton>}
         right={<IconButton label="问题反馈" onClick={() => go("ai")}>?</IconButton>}
       />
-
-      <div className="flow-actions">
-        <button type="button" onClick={() => go("analysis")}>返回</button>
-        <button type="button" onClick={() => go("home")}>暂存实验</button>
-        <button type="button" onClick={() => go("completion")}>完成实验</button>
-        <button className="active" type="button" onClick={() => go("halogen")}>继续</button>
-      </div>
 
       <section className="periodic-table-panel">
         <div className="periodic-panel-head">
@@ -975,6 +1044,11 @@ function PeriodicScreen({ go }) {
           </button>
         ))}
       </div>
+
+      <div className="bottom-action split-action">
+        <button className="outline-btn" type="button" onClick={() => go("analysis")}>返回分析</button>
+        <button className="primary-btn" type="button" onClick={() => go("halogen")}>进入卤素学习</button>
+      </div>
     </section>
   );
 }
@@ -988,24 +1062,12 @@ function HalogenLearningScreen({ go }) {
         right={<IconButton label="性质" onClick={() => go("element")}>›</IconButton>}
       />
 
-      <div className="flow-actions">
-        <button type="button" onClick={() => go("periodic")}>返回</button>
-        <button type="button" onClick={() => go("home")}>暂存实验</button>
-        <button type="button" onClick={() => go("experiment")}>实验</button>
-        <button className="active" type="button" onClick={() => go("element")}>继续</button>
-      </div>
-
       <section className="halogen-learning-hero">
-        <span>课前摸底薄弱</span>
         <h3>卤素</h3>
-        <p>6 个知识组件 · 按顺序学习</p>
+        <p>6 个知识点 · 按顺序学习</p>
       </section>
 
       <section className="kc-section">
-        <div className="section-title">
-          <h3>知识组件</h3>
-          <span>KC</span>
-        </div>
         <div className="kc-stack">
           {halogenKcs.map((item, index) => {
             const [code, ...titleParts] = item.split(" ");
@@ -1026,84 +1088,92 @@ function HalogenLearningScreen({ go }) {
         </div>
       </section>
 
-      <div className="bottom-action split-action">
-        <button className="outline-btn" type="button" onClick={() => go("experiment")}>查看相关实验</button>
-        <button className="primary-btn" type="button" onClick={() => go("element")}>开始学习 13.1</button>
+      <div className="bottom-action">
+        <button className="primary-btn" type="button" onClick={() => go("element")}>学习 13.1 卤族元素通性</button>
       </div>
     </section>
   );
 }
 
 function ElementScreen({ go }) {
-  const [tab, setTab] = useState("common");
+  const [activeKnowledgeIndex, setActiveKnowledgeIndex] = useState(0);
+  const knowledge = halogenKnowledgeCards[activeKnowledgeIndex];
+  const hasNextKnowledge = activeKnowledgeIndex < halogenKnowledgeCards.length - 1;
+  const nextKnowledge = hasNextKnowledge ? halogenKnowledgeCards[activeKnowledgeIndex + 1] : null;
+
+  const goNextKnowledge = () => {
+    if (hasNextKnowledge) {
+      setActiveKnowledgeIndex((index) => index + 1);
+      window.scrollTo(0, 0);
+      return;
+    }
+    go("completion");
+  };
 
   return (
-    <section className="screen active">
+    <section className="screen element-screen active">
       <Header
-        title="卤素性质"
+        title="卤素学习"
         left={<IconButton label="返回" onClick={() => go("halogen")}>‹</IconButton>}
-        right={<IconButton label="继续" onClick={() => go("experiment")}>›</IconButton>}
+        right={<IconButton label={hasNextKnowledge ? "继续" : "完成"} onClick={goNextKnowledge}>›</IconButton>}
       />
 
-      <div className="flow-actions">
-        <button type="button" onClick={() => go("halogen")}>返回</button>
-        <button type="button" onClick={() => go("home")}>暂存实验</button>
-        <button type="button" onClick={() => go("completion")}>完成实验</button>
-        <button className="active" type="button" onClick={() => go("experiment")}>继续</button>
-      </div>
+      <section className="knowledge-card">
+        <div className="knowledge-card-head">
+          <span>{activeKnowledgeIndex + 1} / {halogenKnowledgeCards.length}</span>
+          <em>{knowledge.tag}</em>
+        </div>
+        <strong>{knowledge.code}</strong>
+        <h3>{knowledge.title}</h3>
+        <p>{knowledge.summary}</p>
 
-      <div className="tabs" role="tablist">
-        <button className={tab === "common" ? "active" : ""} type="button" onClick={() => setTab("common")}>
-          通性
-        </button>
-        <button className={tab === "special" ? "active" : ""} type="button" onClick={() => setTab("special")}>
-          特殊性
-        </button>
-      </div>
+        <div className="knowledge-points">
+          {knowledge.points.map((point) => (
+            <div key={point}>
+              <span />
+              <p>{point}</p>
+            </div>
+          ))}
+        </div>
 
-      {tab === "common" ? (
-        <section className="content-block property-card">
-          <h3>卤素通性</h3>
-          <ul className="bullet-list">
-            {commonProperties.map((item) => <li key={item}>{item}</li>)}
-          </ul>
-        </section>
-      ) : (
-        <section className="content-block property-card">
-          <h3>各元素特有性质</h3>
-          <div className="special-stack">
-            {specialProperties.map(([symbol, copy]) => (
-              <article key={symbol}>
-                <strong>{symbol}</strong>
-                <p>{copy}</p>
-              </article>
-            ))}
-          </div>
+        <div className="knowledge-note">
+          <span>学习提示</span>
+          <p>{knowledge.prompt}</p>
+        </div>
+      </section>
+
+      {knowledge.experiment && (
+        <button className="experiment-link-card" type="button" onClick={() => go(knowledge.experiment.target)}>
+          <span>实验</span>
+          <strong>{knowledge.experiment.label}</strong>
+          <small>{knowledge.experiment.copy}</small>
+        </button>
+      )}
+
+      {nextKnowledge && (
+        <section className="next-knowledge-card">
+          <span>下一个知识点</span>
+          <strong>{nextKnowledge.code} {nextKnowledge.title}</strong>
         </section>
       )}
 
-      <section className="experiment-list">
-        <h3>相关实验</h3>
-        {experiments.map(([tone, label, copy, target]) => (
-          <button
-            className={`experiment-item ${tone}`}
-            key={label}
-            type="button"
-            onClick={target ? () => go(target) : undefined}
-          >
-            <span>⚗</span>
-            <strong>{label}<small>{copy}</small></strong>
-            <em>›</em>
+      <div className={`bottom-action${knowledge.experiment ? " split-action" : ""}`}>
+        {knowledge.experiment && (
+          <button className="outline-btn" type="button" onClick={() => go(knowledge.experiment.target)}>
+            相关实验
           </button>
-        ))}
-      </section>
+        )}
+        <button className="primary-btn" type="button" onClick={goNextKnowledge}>
+          {hasNextKnowledge ? "下一个知识点" : "完成知识点学习"}
+        </button>
+      </div>
     </section>
   );
 }
 
 function ExperimentScreen({ go }) {
   return (
-    <section className="screen active">
+    <section className="screen experiment-screen active">
       <Header
         title="卤素的氧化性实验"
         left={<IconButton label="返回" onClick={() => go("element")}>‹</IconButton>}
@@ -1138,10 +1208,10 @@ function ExperimentScreen({ go }) {
 
       <div className="bottom-action split-action">
         <button className="outline-btn" type="button" onClick={() => go("element")}>
-          回到实验列表
+          返回性质
         </button>
         <button className="primary-btn" type="button" onClick={() => go("completion")}>
-          完成实验
+          完成学习
         </button>
       </div>
     </section>
@@ -1150,19 +1220,27 @@ function ExperimentScreen({ go }) {
 
 function CompletionScreen({ go }) {
   return (
-    <section className="screen active">
+    <section className="screen completion-screen active">
       <Header
-        title="完成实验"
-        left={<IconButton label="返回" onClick={() => go("element")}>‹</IconButton>}
+        title="学习完成"
+        left={<IconButton label="返回" onClick={() => go("experiment")}>‹</IconButton>}
       />
 
       <div className="celebrate">
         <div className="trophy" aria-hidden="true">
           <img src={logoSrc} alt="" />
         </div>
-        <h3>学习进度 100%</h3>
-        <p>已完成所选实验。</p>
-        <button className="outline-btn" type="button" onClick={() => go("home")}>暂存实验</button>
+        <h3>推荐路径已完成</h3>
+        <p>下一步进入课后测验，验证卤素模块学习效果。</p>
+        <div className="checkpoint-list">
+          {completionChecks.map(([label, value]) => (
+            <div key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </div>
+        <button className="outline-btn" type="button" onClick={() => go("experiment")}>回看实验</button>
         <button className="primary-btn" type="button" onClick={() => go("postquiz")}>
           进入课后测验
         </button>
@@ -1175,7 +1253,7 @@ function PostQuizScreen({ go }) {
   const [q3, setQ3] = useState("B");
 
   return (
-    <section className="screen active">
+    <section className="screen postquiz-screen active">
       <Header
         title="课后小测试"
         left={<IconButton label="返回" onClick={() => go("completion")}>‹</IconButton>}
@@ -1207,7 +1285,7 @@ function PostQuizScreen({ go }) {
       </div>
       <div className="bottom-action">
         <button className="primary-btn" type="button" onClick={() => go("report")}>
-          查看总结
+          提交并查看总结
         </button>
       </div>
     </section>
@@ -1219,7 +1297,7 @@ function ReportScreen({ go }) {
     <section className="screen report-screen active">
       <Header
         title="数据总结"
-        left={<IconButton label="返回" onClick={() => go("periodic")}>‹</IconButton>}
+        left={<IconButton label="返回" onClick={() => go("postquiz")}>‹</IconButton>}
         right={<IconButton label="退出" onClick={() => go("login")}>↩</IconButton>}
       />
 
@@ -1250,7 +1328,7 @@ function ReportScreen({ go }) {
         </div>
         <h4>学习路径</h4>
         <div className="path-line">
-          <span>课前测</span><i /><span>p区</span><i /><span>课后测</span>
+          <span>p区</span><i /><span>卤素</span><i /><span>实验</span><i /><span>课后测</span>
         </div>
         <h4>学习内容</h4>
         <p className="check green">p 区：卤素通性、F / Cl / Br / I 特殊性</p>
@@ -1283,7 +1361,7 @@ function ReportScreen({ go }) {
         <div className="weak-item orange"><span>↻</span><p>卤素的还原性<br /><small>掌握度：60%</small></p></div>
         <div className="weak-item blue"><span>♙</span><p>卤化氢的特殊性<br /><small>掌握度：62%</small></p></div>
         <div className="weak-item orange"><span>⌬</span><p>含氧酸盐的氧化性<br /><small>掌握度：58%</small></p></div>
-        <button className="soft-btn" type="button" onClick={() => go("element")}>继续学习建议</button>
+        <button className="soft-btn" type="button" onClick={() => go("periodic")}>回到元素区</button>
       </section>
     </section>
   );
