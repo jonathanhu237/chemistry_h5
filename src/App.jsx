@@ -175,30 +175,16 @@ const experiments = [
   ["orange", "卤化银的感光性", "沉淀颜色与光照变化"],
 ];
 
-const homeModules = [
-  ["quiz", "课前小测试", "10 题", "01"],
-  ["periodic", "元素区", "s / p / d / ds", "02"],
-  ["ai", "AI 实验助教", "现象 / 方程式", "AI"],
-  ["bank", "题库与组卷", "课前 / 课后", "题库"],
-];
-
-const flowSteps = [
-  ["登录", "姓名 / 学号"],
-  ["课前测试", "10 题"],
-  ["结果分析", "薄弱点"],
-  ["元素区", "p 区 · 卤素"],
-  ["卤素学习", "知识点路径"],
-  ["性质预习", "通性 / 特殊性"],
-  ["实验学习", "反应视频"],
-  ["完成确认", "学习检查"],
-  ["课后测试", "10 题"],
-  ["数据总结", "成绩 / 路径"],
-];
-
 const completionChecks = [
   ["推荐路径", "p 区 · 卤素"],
   ["学习内容", "13.1 卤族元素通性"],
   ["实验记录", "卤素的氧化性"],
+];
+
+const experimentRecordChecks = [
+  ["实验现象", "溶液由无色转为棕色，碘在有机层显色。"],
+  ["反应方程式", "Cl₂ + 2I⁻ = 2Cl⁻ + I₂"],
+  ["实验结论", "Cl₂ 可氧化 I⁻，氧化性强于 I₂。"],
 ];
 
 const demoNavGroups = [
@@ -212,38 +198,12 @@ const demoNavGroups = [
       ["halogen", "卤素学习"],
       ["element", "性质"],
       ["experiment", "实验"],
+      ["record", "记录"],
       ["completion", "完成"],
       ["postquiz", "课后"],
       ["report", "总结"],
     ],
   },
-];
-
-const resources = [
-  ["教材精读", "第 13 章 卤素元素", "氧化性强弱、卤离子检验、置换反应", "必学"],
-  ["实验讲义", "氯气氧化碘离子", "观察颜色变化，记录反应条件与证据", "今日"],
-  ["错题回看", "氧化还原判断", "从电子转移角度复盘课前错题", "建议"],
-];
-
-const keyPoints = [
-  "Cl2、Br2、I2 的氧化性依次减弱",
-  "卤素单质可置换较弱卤素对应的卤离子",
-  "实验现象需同时记录颜色、层析位置与反应前后差异",
-];
-
-const assistantReplies = {
-  phenomenon:
-    "紫红色来自碘单质在有机层中的显色。氯气氧化 I- 生成 I2，因此颜色从无色转为棕色或紫红色。",
-  equation:
-    "本实验的核心方程式是 Cl2 + 2I- = 2Cl- + I2。判断时先找化合价变化，再比较氧化剂与还原剂。",
-  quiz:
-    "本次练习包含卤素氧化性、卤离子还原性和教材基础题。",
-};
-
-const questionSources = [
-  ["课前测评", "10 题", "覆盖元素性质实验模块"],
-  ["题型分布", "3 类", "选择 / 判断 / 填空"],
-  ["推荐依据", "9 组", "定位薄弱元素类别"],
 ];
 
 const zoneCards = [
@@ -481,210 +441,6 @@ function DemoNavigator({ screen, go }) {
   );
 }
 
-function HomeScreen({ go }) {
-  return (
-    <section className="screen home-screen active">
-      <Header
-        title="今日学习"
-        left={<IconButton label="占位" hidden />}
-        right={<IconButton label="学习报告" onClick={() => go("report")}>◎</IconButton>}
-      />
-
-      <section className="home-hero">
-        <p className="eyebrow">今日实验任务</p>
-        <h1>元素性质实验</h1>
-        <div className="hero-stats">
-          <span><strong>10</strong> 道课前题</span>
-          <span><strong>p</strong> 区推荐</span>
-          <span><strong>38</strong> min</span>
-        </div>
-        <div className="hero-actions">
-          <button className="primary-btn" type="button" onClick={() => go("quiz")}>开始课前小测试</button>
-          <button className="outline-btn" type="button" onClick={() => go("periodic")}>元素区</button>
-        </div>
-      </section>
-
-      <section className="module-grid" aria-label="功能入口">
-        {homeModules.map(([target, title, copy, badge]) => (
-          <button className={`module-card ${target}`} key={title} type="button" onClick={() => go(target)}>
-            <span>{badge}</span>
-            <strong>{title}</strong>
-            <em>{copy}</em>
-          </button>
-        ))}
-      </section>
-
-      <section className="timeline-panel">
-        <div className="section-title">
-          <h3>学习路径</h3>
-          <span>今日</span>
-        </div>
-        <ol className="learning-timeline">
-          {flowSteps.map(([title, copy], index) => (
-            <li key={title}>
-              <span>{index + 1}</span>
-              <p><strong>{title}</strong>{copy}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-    </section>
-  );
-}
-
-function MaterialsScreen({ go }) {
-  return (
-    <section className="screen material-screen active">
-      <Header
-        title="资料推送"
-        left={<IconButton label="返回" onClick={() => go("home")}>‹</IconButton>}
-        right={<IconButton label="AI 答疑" onClick={() => go("ai")}>?</IconButton>}
-      />
-
-      <section className="resource-summary">
-        <div>
-          <span>今日资料</span>
-          <strong>卤素氧化性预习包</strong>
-        </div>
-        <button type="button" onClick={() => go("halogen")}>学习</button>
-      </section>
-
-      <div className="resource-stack">
-        {resources.map(([type, title, copy, tag]) => (
-          <article className="resource-card" key={title}>
-            <span>{type}</span>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-            <em>{tag}</em>
-          </article>
-        ))}
-      </div>
-
-      <div className="bottom-action split-action">
-        <button className="outline-btn" type="button" onClick={() => go("periodic")}>查看元素路径</button>
-        <button className="primary-btn" type="button" onClick={() => go("halogen")}>开始卤素学习</button>
-      </div>
-    </section>
-  );
-}
-
-function AiTutorScreen({ go }) {
-  const [messages, setMessages] = useState([
-    { role: "ai", text: "我已读取教材第 13 章与实验讲义。你可以问实验现象、反应方程式或课后出题逻辑。" },
-  ]);
-  const [draft, setDraft] = useState("");
-
-  const ask = (type, fallback) => {
-    const question = fallback || draft.trim();
-    if (!question) return;
-    const reply = assistantReplies[type] ?? assistantReplies.phenomenon;
-    setMessages((current) => [
-      ...current,
-      { role: "student", text: question },
-      { role: "ai", text: reply },
-    ]);
-    setDraft("");
-  };
-
-  return (
-    <section className="screen ai-screen active">
-      <Header
-        title="AI 实验助教"
-        left={<IconButton label="返回" onClick={() => go("home")}>‹</IconButton>}
-        right={<IconButton label="实验视频" onClick={() => go("experiment")}>▶</IconButton>}
-      />
-
-      <section className="ai-context">
-        <span>实验助教</span>
-        <strong>教材 13.2 · 实验讲义 · 课前错题</strong>
-      </section>
-
-      <div className="prompt-grid">
-        <button type="button" onClick={() => ask("phenomenon", "为什么溶液会变成紫红色？")}>解释现象</button>
-        <button type="button" onClick={() => ask("equation", "这个实验的反应方程式是什么？")}>方程式</button>
-        <button type="button" onClick={() => ask("quiz", "练习包含哪些内容？")}>练习内容</button>
-      </div>
-
-      <section className="chat-panel" aria-label="AI 问答记录">
-        {messages.map((message, index) => (
-          <div className={`message ${message.role}`} key={`${message.role}-${index}`}>
-            <p>{message.text}</p>
-            {message.role === "ai" && (
-              <span>参考：教材 · 实验讲义</span>
-            )}
-          </div>
-        ))}
-      </section>
-
-      <form
-        className="chat-input"
-        onSubmit={(event) => {
-          event.preventDefault();
-          ask("phenomenon");
-        }}
-      >
-        <input
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          placeholder="输入一个实验问题"
-        />
-        <button type="submit">发送</button>
-      </form>
-    </section>
-  );
-}
-
-function QuestionBankScreen({ go }) {
-  const [mode, setMode] = useState("adaptive");
-
-  return (
-    <section className="screen bank-screen active">
-      <Header
-        title="题库与组卷"
-        left={<IconButton label="返回" onClick={() => go("home")}>‹</IconButton>}
-        right={<IconButton label="报告" onClick={() => go("report")}>◎</IconButton>}
-      />
-
-      <section className="paper-builder">
-        <span>组卷方式</span>
-        <h3>{mode === "adaptive" ? "薄弱点优先" : "章节练习"}</h3>
-        <div className="mode-toggle">
-          <button className={mode === "adaptive" ? "active" : ""} type="button" onClick={() => setMode("adaptive")}>轨迹优先</button>
-          <button className={mode === "manual" ? "active" : ""} type="button" onClick={() => setMode("manual")}>章节练习</button>
-        </div>
-      </section>
-
-      <div className="source-list">
-        {questionSources.map(([title, count, copy]) => (
-          <article className="source-card" key={title}>
-            <strong>{count}</strong>
-            <span>{title}</span>
-            <p>{copy}</p>
-          </article>
-        ))}
-      </div>
-
-      <section className="content-block blueprint-block">
-        <h3>试卷预览</h3>
-        <div className="blueprint-row"><span>选择题</span><strong>6 题</strong><em>基础概念 + 易错项</em></div>
-        <div className="blueprint-row"><span>判断题</span><strong>3 题</strong><em>化合价与现象判断</em></div>
-        <div className="blueprint-row"><span>问答题</span><strong>3 题</strong><em>实验解释与方程式</em></div>
-      </section>
-
-      <section className="recommend paper-note">
-        <h3>组卷依据</h3>
-        <p><span className="dot teal" />课前错题</p>
-        <p><span className="dot blue" />推荐路径</p>
-      </section>
-
-      <div className="bottom-action split-action">
-        <button className="outline-btn" type="button" onClick={() => go("quiz")}>预览课前卷</button>
-        <button className="primary-btn" type="button" onClick={() => go("postquiz")}>预览课后卷</button>
-      </div>
-    </section>
-  );
-}
-
 function LoginScreen({ go }) {
   return (
     <section className="screen screen-login active">
@@ -722,10 +478,7 @@ function LoginScreen({ go }) {
           <input type="text" name="studentId" placeholder="学号：12345678" inputMode="numeric" />
         </label>
         <button className="primary-btn" type="submit">
-          进入课前小测试
-        </button>
-        <button className="feedback-btn" type="button" onClick={() => go("ai")}>
-          程序问题反馈 / 实验问题反馈
+          登录
         </button>
       </form>
     </section>
@@ -756,7 +509,6 @@ function QuizScreen({ go }) {
       <Header
         title="课前小测试"
         left={<IconButton label="返回" onClick={() => go("login")}>‹</IconButton>}
-        right={<IconButton label="问题反馈" onClick={() => go("ai")}>?</IconButton>}
       />
       <div className="progress-block">
         <div className="progress-meta">
@@ -925,7 +677,6 @@ function PeriodicScreen({ go }) {
       <Header
         title="元素区"
         left={<IconButton label="返回" onClick={() => go("analysis")}>‹</IconButton>}
-        right={<IconButton label="问题反馈" onClick={() => go("ai")}>?</IconButton>}
       />
 
       <section className="periodic-table-panel">
@@ -1175,7 +926,7 @@ function ExperimentScreen({ go }) {
       <Header
         title="卤素的氧化性实验"
         left={<IconButton label="返回" onClick={() => go("element")}>‹</IconButton>}
-        right={<IconButton label="完成" onClick={() => go("completion")}>✓</IconButton>}
+        right={<IconButton label="记录" onClick={() => go("record")}>✓</IconButton>}
       />
 
       <div className="video-card" role="img" aria-label="实验视频：试管中发生紫色反应">
@@ -1208,8 +959,46 @@ function ExperimentScreen({ go }) {
         <button className="outline-btn" type="button" onClick={() => go("element")}>
           返回性质
         </button>
+        <button className="primary-btn" type="button" onClick={() => go("record")}>
+          记录实验
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function ExperimentRecordScreen({ go }) {
+  return (
+    <section className="screen experiment-record-screen active">
+      <Header
+        title="实验记录"
+        left={<IconButton label="返回" onClick={() => go("experiment")}>‹</IconButton>}
+      />
+
+      <section className="record-summary-card">
+        <span>观察确认</span>
+        <h3>卤素的氧化性</h3>
+        <p>根据实验视频确认关键现象、方程式和结论。</p>
+      </section>
+
+      <div className="record-check-list">
+        {experimentRecordChecks.map(([title, copy]) => (
+          <label key={title}>
+            <input type="checkbox" defaultChecked />
+            <span>
+              <strong>{title}</strong>
+              <em>{copy}</em>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      <div className="bottom-action split-action">
+        <button className="outline-btn" type="button" onClick={() => go("experiment")}>
+          返回实验
+        </button>
         <button className="primary-btn" type="button" onClick={() => go("completion")}>
-          完成学习
+          确认完成
         </button>
       </div>
     </section>
@@ -1221,7 +1010,7 @@ function CompletionScreen({ go }) {
     <section className="screen completion-screen active">
       <Header
         title="学习完成"
-        left={<IconButton label="返回" onClick={() => go("experiment")}>‹</IconButton>}
+        left={<IconButton label="返回" onClick={() => go("record")}>‹</IconButton>}
       />
 
       <div className="celebrate">
@@ -1238,7 +1027,7 @@ function CompletionScreen({ go }) {
             </div>
           ))}
         </div>
-        <button className="outline-btn" type="button" onClick={() => go("experiment")}>返回</button>
+        <button className="outline-btn" type="button" onClick={() => go("record")}>返回</button>
         <button className="primary-btn" type="button" onClick={() => go("postquiz")}>
           进入课后测验
         </button>
@@ -1388,16 +1177,13 @@ export default function App() {
       <main className="phone-shell" aria-live="polite">
         <StatusBar />
         {screen === "login" && <LoginScreen go={go} />}
-        {screen === "home" && <HomeScreen go={go} />}
-        {screen === "materials" && <MaterialsScreen go={go} />}
-        {screen === "ai" && <AiTutorScreen go={go} />}
-        {screen === "bank" && <QuestionBankScreen go={go} />}
         {screen === "quiz" && <QuizScreen go={go} />}
         {screen === "analysis" && <AnalysisScreen go={go} />}
         {screen === "periodic" && <PeriodicScreen go={go} />}
         {screen === "halogen" && <HalogenLearningScreen go={go} />}
         {screen === "element" && <ElementScreen go={go} />}
         {screen === "experiment" && <ExperimentScreen go={go} />}
+        {screen === "record" && <ExperimentRecordScreen go={go} />}
         {screen === "completion" && <CompletionScreen go={go} />}
         {screen === "postquiz" && <PostQuizScreen go={go} />}
         {screen === "report" && <ReportScreen go={go} />}
