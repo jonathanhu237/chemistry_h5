@@ -217,15 +217,6 @@ const demoNavGroups = [
       ["report", "总结"],
     ],
   },
-  {
-    title: "辅助",
-    items: [
-      ["home", "路径"],
-      ["materials", "资料"],
-      ["ai", "AI"],
-      ["bank", "组卷"],
-    ],
-  },
 ];
 
 const resources = [
@@ -1098,8 +1089,15 @@ function HalogenLearningScreen({ go }) {
 function ElementScreen({ go }) {
   const [activeKnowledgeIndex, setActiveKnowledgeIndex] = useState(0);
   const knowledge = halogenKnowledgeCards[activeKnowledgeIndex];
+  const hasPreviousKnowledge = activeKnowledgeIndex > 0;
   const hasNextKnowledge = activeKnowledgeIndex < halogenKnowledgeCards.length - 1;
-  const nextKnowledge = hasNextKnowledge ? halogenKnowledgeCards[activeKnowledgeIndex + 1] : null;
+
+  const goPreviousKnowledge = () => {
+    if (hasPreviousKnowledge) {
+      setActiveKnowledgeIndex((index) => index - 1);
+      window.scrollTo(0, 0);
+    }
+  };
 
   const goNextKnowledge = () => {
     if (hasNextKnowledge) {
@@ -1144,27 +1142,27 @@ function ElementScreen({ go }) {
 
       {knowledge.experiment && (
         <button className="experiment-link-card" type="button" onClick={() => go(knowledge.experiment.target)}>
-          <span>实验</span>
-          <strong>{knowledge.experiment.label}</strong>
-          <small>{knowledge.experiment.copy}</small>
+          <span className="experiment-link-copy">
+            <span>实验</span>
+            <strong>{knowledge.experiment.label}</strong>
+            <small>{knowledge.experiment.copy}</small>
+          </span>
+          <span className="watch-cta" aria-hidden="true">
+            <i>▶</i>
+            观看
+          </span>
         </button>
       )}
 
-      {nextKnowledge && (
-        <section className="next-knowledge-card">
-          <span>下一个知识点</span>
-          <strong>{nextKnowledge.code} {nextKnowledge.title}</strong>
-        </section>
-      )}
-
-      <div className={`bottom-action${knowledge.experiment ? " split-action" : ""}`}>
-        {knowledge.experiment && (
-          <button className="outline-btn" type="button" onClick={() => go(knowledge.experiment.target)}>
-            相关实验
-          </button>
-        )}
+      <div className="bottom-action knowledge-nav-action">
+        <button className="outline-btn" type="button" onClick={() => go("halogen")}>
+          返回
+        </button>
+        <button className="outline-btn" type="button" onClick={goPreviousKnowledge} disabled={!hasPreviousKnowledge}>
+          上一个知识点
+        </button>
         <button className="primary-btn" type="button" onClick={goNextKnowledge}>
-          {hasNextKnowledge ? "下一个知识点" : "完成知识点学习"}
+          {hasNextKnowledge ? "下一个知识点" : "完成学习"}
         </button>
       </div>
     </section>
@@ -1240,7 +1238,7 @@ function CompletionScreen({ go }) {
             </div>
           ))}
         </div>
-        <button className="outline-btn" type="button" onClick={() => go("experiment")}>回看实验</button>
+        <button className="outline-btn" type="button" onClick={() => go("experiment")}>返回</button>
         <button className="primary-btn" type="button" onClick={() => go("postquiz")}>
           进入课后测验
         </button>

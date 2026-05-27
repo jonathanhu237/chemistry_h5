@@ -1241,6 +1241,26 @@ p {
   gap: 10px;
 }
 
+.knowledge-nav-action {
+  display: grid;
+  grid-template-columns: .72fr 1fr 1fr;
+  gap: 8px;
+}
+
+.knowledge-nav-action .primary-btn,
+.knowledge-nav-action .outline-btn {
+  min-height: 48px;
+  padding: 0 8px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.knowledge-nav-action button:disabled {
+  cursor: default;
+  opacity: .45;
+  box-shadow: none;
+}
+
 .ai-context {
   padding: 16px;
   background:
@@ -2425,8 +2445,7 @@ p {
   line-height: 1.55;
 }
 
-.experiment-link-card,
-.next-knowledge-card {
+.experiment-link-card {
   display: grid;
   gap: 5px;
   width: 100%;
@@ -2440,21 +2459,28 @@ p {
 }
 
 .experiment-link-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
   border-color: rgba(53, 111, 156, .22);
   background:
     linear-gradient(90deg, rgba(53, 111, 156, .055) 1px, transparent 1px 22px),
     #fff;
 }
 
-.experiment-link-card span,
-.next-knowledge-card span {
+.experiment-link-copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.experiment-link-card span {
   color: var(--muted);
   font-size: 11px;
   font-weight: 900;
 }
 
-.experiment-link-card strong,
-.next-knowledge-card strong {
+.experiment-link-card strong {
   color: var(--ink);
   font-size: 15px;
   font-weight: 900;
@@ -2466,6 +2492,40 @@ p {
   font-size: 12px;
   font-weight: 800;
   line-height: 1.45;
+}
+
+.watch-cta {
+  display: inline-flex;
+  min-width: 78px;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  color: #fff !important;
+  background: var(--blue);
+  box-shadow: 0 12px 20px rgba(53, 111, 156, .2);
+  font-size: 13px !important;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.watch-cta i {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .18);
+  font-size: 9px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.experiment-link-card:hover .watch-cta {
+  background: #245f8c;
+  transform: translateX(1px);
 }
 
 .video-card {
