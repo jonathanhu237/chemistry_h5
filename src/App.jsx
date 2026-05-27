@@ -472,6 +472,66 @@ function AiAssistantSheet({ contextLabel, contextType, onClose, open }) {
   );
 }
 
+function FeedbackSheet({ onClose, open }) {
+  const [feedbackType, setFeedbackType] = useState("program");
+  const [feedbackText, setFeedbackText] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  if (!open) return null;
+
+  const submitFeedback = (event) => {
+    event.preventDefault();
+    if (!feedbackText.trim()) return;
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="feedback-layer" role="presentation">
+      <button className="feedback-backdrop" type="button" aria-label="关闭问题反馈" onClick={onClose} />
+      <section className="feedback-sheet" role="dialog" aria-modal="true" aria-label="问题反馈">
+        <div className="feedback-sheet-handle" aria-hidden="true" />
+        <div className="feedback-sheet-head">
+          <div>
+            <span>问题反馈</span>
+            <strong>告诉我们你遇到的问题</strong>
+          </div>
+          <button type="button" onClick={onClose} aria-label="关闭问题反馈">关闭</button>
+        </div>
+        <form className="feedback-form" onSubmit={submitFeedback}>
+          <div className="feedback-type-tabs" aria-label="反馈类型">
+            <button
+              className={feedbackType === "program" ? "active" : ""}
+              type="button"
+              onClick={() => setFeedbackType("program")}
+            >
+              程序问题
+            </button>
+            <button
+              className={feedbackType === "experiment" ? "active" : ""}
+              type="button"
+              onClick={() => setFeedbackType("experiment")}
+            >
+              实验问题
+            </button>
+          </div>
+          <textarea
+            value={feedbackText}
+            onChange={(event) => {
+              setFeedbackText(event.target.value);
+              setSubmitted(false);
+            }}
+            placeholder={feedbackType === "program" ? "描述页面、登录或操作问题" : "描述实验现象、视频或学习内容问题"}
+          />
+          {submitted && <p className="feedback-result">反馈已记录</p>}
+          <button className="primary-btn" type="submit">
+            提交反馈
+          </button>
+        </form>
+      </section>
+    </div>
+  );
+}
+
 function DemoNavigator({ screen, go }) {
   return (
     <aside className="demo-nav" aria-label="演示跳转导航">
@@ -501,6 +561,8 @@ function DemoNavigator({ screen, go }) {
 }
 
 function LoginScreen({ go }) {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
   return (
     <section className="screen screen-login active">
       <div className="login-panel">
@@ -539,7 +601,11 @@ function LoginScreen({ go }) {
         <button className="primary-btn" type="submit">
           登录
         </button>
+        <button className="feedback-btn" type="button" onClick={() => setFeedbackOpen(true)}>
+          问题反馈
+        </button>
       </form>
+      <FeedbackSheet open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </section>
   );
 }
