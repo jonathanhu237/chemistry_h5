@@ -406,6 +406,72 @@ function IconButton({ label, children, onClick, hidden = false }) {
   );
 }
 
+function getAssistantPrompts(contextType, contextLabel) {
+  const isExperiment = contextType === "experiment";
+
+  return [
+    {
+      id: "phenomenon",
+      label: "解释现象",
+      answer: isExperiment
+        ? "氯气将碘离子氧化为碘单质，碘在有机层中显色，因此会看到颜色由浅变深。观察时要同时记录颜色变化和分层位置。"
+        : `把${contextLabel}和实验现象连起来看：卤素单质氧化性越强，越容易把较弱卤离子氧化成对应单质，颜色变化就是反应发生的证据。`,
+    },
+    {
+      id: "equation",
+      label: "检查方程式",
+      answer: "本实验的核心方程式是 Cl₂ + 2I⁻ = 2Cl⁻ + I₂。检查时先看元素守恒，再看 Cl 从 0 价变为 -1 价，I 从 -1 价变为 0 价。",
+    },
+    {
+      id: "practice",
+      label: "生成练习",
+      answer: isExperiment
+        ? "练习题：若把氯水加入含 Br⁻ 的溶液中，能否发生置换反应？请写出现象和离子方程式。"
+        : `练习题：结合${contextLabel}，判断 Cl₂、Br₂、I₂ 氧化性强弱，并说明一个能验证该顺序的实验现象。`,
+    },
+  ];
+}
+
+function AiAssistantSheet({ contextLabel, contextType, onClose, open }) {
+  const prompts = getAssistantPrompts(contextType, contextLabel);
+  const [activePromptId, setActivePromptId] = useState(prompts[0].id);
+  const activePrompt = prompts.find((prompt) => prompt.id === activePromptId) ?? prompts[0];
+
+  if (!open) return null;
+
+  return (
+    <div className="ai-assistant-layer" role="presentation">
+      <button className="ai-assistant-backdrop" type="button" aria-label="关闭 AI 助教" onClick={onClose} />
+      <section className="ai-assistant-sheet" role="dialog" aria-modal="true" aria-label="AI 助教">
+        <div className="ai-sheet-handle" aria-hidden="true" />
+        <div className="ai-sheet-head">
+          <div>
+            <span>AI 助教</span>
+            <strong>当前：{contextLabel}</strong>
+          </div>
+          <button type="button" onClick={onClose} aria-label="关闭 AI 助教">关闭</button>
+        </div>
+        <div className="ai-quick-grid" aria-label="快捷问题">
+          {prompts.map((prompt) => (
+            <button
+              className={prompt.id === activePrompt.id ? "active" : ""}
+              key={prompt.id}
+              type="button"
+              onClick={() => setActivePromptId(prompt.id)}
+            >
+              {prompt.label}
+            </button>
+          ))}
+        </div>
+        <article className="ai-answer-card">
+          <span>{activePrompt.label}</span>
+          <p>{activePrompt.answer}</p>
+        </article>
+      </section>
+    </div>
+  );
+}
+
 function DemoNavigator({ screen, go }) {
   return (
     <aside className="demo-nav" aria-label="演示跳转导航">
@@ -832,9 +898,11 @@ function HalogenLearningScreen({ go }) {
 
 function ElementScreen({ go }) {
   const [activeKnowledgeIndex, setActiveKnowledgeIndex] = useState(0);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const knowledge = halogenKnowledgeCards[activeKnowledgeIndex];
   const hasPreviousKnowledge = activeKnowledgeIndex > 0;
   const hasNextKnowledge = activeKnowledgeIndex < halogenKnowledgeCards.length - 1;
+  const assistantContext = `${knowledge.code} ${knowledge.title}`;
 
   const goPreviousKnowledge = () => {
     if (hasPreviousKnowledge) {
@@ -882,6 +950,12 @@ function ElementScreen({ go }) {
           <span>学习提示</span>
           <p>{knowledge.prompt}</p>
         </div>
+
+        <button className="ai-assistant-entry" type="button" onClick={() => setAssistantOpen(true)}>
+          <span>AI 助教</span>
+          <strong>问助教</strong>
+          <small>当前：{assistantContext}</small>
+        </button>
       </section>
 
       {knowledge.experiment && (
@@ -909,11 +983,21 @@ function ElementScreen({ go }) {
           {hasNextKnowledge ? "下一个知识点" : "完成学习"}
         </button>
       </div>
+
+      <AiAssistantSheet
+        contextLabel={assistantContext}
+        contextType="knowledge"
+        open={assistantOpen}
+        onClose={() => setAssistantOpen(false)}
+      />
     </section>
   );
 }
 
 function ExperimentScreen({ go }) {
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const assistantContext = "卤素的氧化性实验";
+
   return (
     <section className="screen experiment-screen active">
       <Header
@@ -947,11 +1031,24 @@ function ExperimentScreen({ go }) {
         </p>
       </article>
 
+      <button className="ai-assistant-entry experiment-ai-entry" type="button" onClick={() => setAssistantOpen(true)}>
+        <span>AI 助教</span>
+        <strong>问助教</strong>
+        <small>当前：{assistantContext}</small>
+      </button>
+
       <div className="bottom-action">
         <button className="outline-btn" type="button" onClick={() => go("element")}>
           返回性质
         </button>
       </div>
+
+      <AiAssistantSheet
+        contextLabel={assistantContext}
+        contextType="experiment"
+        open={assistantOpen}
+        onClose={() => setAssistantOpen(false)}
+      />
     </section>
   );
 }
