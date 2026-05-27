@@ -178,13 +178,7 @@ const experiments = [
 const completionChecks = [
   ["推荐路径", "p 区 · 卤素"],
   ["学习内容", "13.1 卤族元素通性"],
-  ["实验记录", "卤素的氧化性"],
-];
-
-const experimentRecordChecks = [
-  ["实验现象", "溶液由无色转为棕色，碘在有机层显色。"],
-  ["反应方程式", "Cl₂ + 2I⁻ = 2Cl⁻ + I₂"],
-  ["实验结论", "Cl₂ 可氧化 I⁻，氧化性强于 I₂。"],
+  ["实验学习", "卤素的氧化性"],
 ];
 
 const demoNavGroups = [
@@ -198,7 +192,6 @@ const demoNavGroups = [
       ["halogen", "卤素学习"],
       ["element", "性质"],
       ["experiment", "实验"],
-      ["record", "记录"],
       ["completion", "完成"],
       ["postquiz", "课后"],
       ["report", "总结"],
@@ -926,7 +919,6 @@ function ExperimentScreen({ go }) {
       <Header
         title="卤素的氧化性实验"
         left={<IconButton label="返回" onClick={() => go("element")}>‹</IconButton>}
-        right={<IconButton label="记录" onClick={() => go("record")}>✓</IconButton>}
       />
 
       <div className="video-card" role="img" aria-label="实验视频：试管中发生紫色反应">
@@ -955,50 +947,9 @@ function ExperimentScreen({ go }) {
         </p>
       </article>
 
-      <div className="bottom-action split-action">
+      <div className="bottom-action">
         <button className="outline-btn" type="button" onClick={() => go("element")}>
           返回性质
-        </button>
-        <button className="primary-btn" type="button" onClick={() => go("record")}>
-          记录实验
-        </button>
-      </div>
-    </section>
-  );
-}
-
-function ExperimentRecordScreen({ go }) {
-  return (
-    <section className="screen experiment-record-screen active">
-      <Header
-        title="实验记录"
-        left={<IconButton label="返回" onClick={() => go("experiment")}>‹</IconButton>}
-      />
-
-      <section className="record-summary-card">
-        <span>观察确认</span>
-        <h3>卤素的氧化性</h3>
-        <p>根据实验视频确认关键现象、方程式和结论。</p>
-      </section>
-
-      <div className="record-check-list">
-        {experimentRecordChecks.map(([title, copy]) => (
-          <label key={title}>
-            <input type="checkbox" defaultChecked />
-            <span>
-              <strong>{title}</strong>
-              <em>{copy}</em>
-            </span>
-          </label>
-        ))}
-      </div>
-
-      <div className="bottom-action split-action">
-        <button className="outline-btn" type="button" onClick={() => go("experiment")}>
-          返回实验
-        </button>
-        <button className="primary-btn" type="button" onClick={() => go("completion")}>
-          确认完成
         </button>
       </div>
     </section>
@@ -1010,7 +961,7 @@ function CompletionScreen({ go }) {
     <section className="screen completion-screen active">
       <Header
         title="学习完成"
-        left={<IconButton label="返回" onClick={() => go("record")}>‹</IconButton>}
+        left={<IconButton label="返回" onClick={() => go("element")}>‹</IconButton>}
       />
 
       <div className="celebrate">
@@ -1027,7 +978,7 @@ function CompletionScreen({ go }) {
             </div>
           ))}
         </div>
-        <button className="outline-btn" type="button" onClick={() => go("record")}>返回</button>
+        <button className="outline-btn" type="button" onClick={() => go("element")}>返回</button>
         <button className="primary-btn" type="button" onClick={() => go("postquiz")}>
           进入课后测验
         </button>
@@ -1183,7 +1134,6 @@ export default function App() {
         {screen === "halogen" && <HalogenLearningScreen go={go} />}
         {screen === "element" && <ElementScreen go={go} />}
         {screen === "experiment" && <ExperimentScreen go={go} />}
-        {screen === "record" && <ExperimentRecordScreen go={go} />}
         {screen === "completion" && <CompletionScreen go={go} />}
         {screen === "postquiz" && <PostQuizScreen go={go} />}
         {screen === "report" && <ReportScreen go={go} />}
